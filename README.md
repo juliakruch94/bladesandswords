@@ -30,6 +30,14 @@ Tools/
 
 Docs/
   System_Architecture.md
+  Subsystems/
+    Exploration_System.md
+    Combat_System.md
+    Progression_System.md
+    Content_System.md
+    Dungeon_Generator.md
+    Event_Editor_v2.md
+    Build_Pipeline.md
   Data_Formats_and_File_Structure.md
   Performance_and_Targets.md
   Dependencies_and_Risks.md
@@ -52,15 +60,17 @@ The game uses a **modular architecture** built around clearly separated subsyste
 
 | Subsystem          | Description                                                                 |
 |--------------------|-----------------------------------------------------------------------------|
-| Exploration System | Handles hex-grid traversal, node discovery, encounter triggers.             |
-| Combat System      | Turn-based engine with initiative queue, ability resolution, modifiers.     |
-| Progression System | XP, leveling, talents, glyph upgrades, equipment tiers.                     |
-| Content System     | Encounters, dialogue scripts, loot tables, region data.                     |
-| Dungeon Generator  | Procedural generator for roguelite dungeon layouts, rules, biomes.          |
-| Event Editor v2    | Internal tool for branching encounters and story beats.                     |
-| Build Pipeline     | Automation for nightly/weekly builds, version tagging, changelog generation.|
+| [Exploration System](Docs/Subsystems/Exploration_System.md) | Handles hex-grid traversal, node discovery, encounter triggers.             |
+| [Combat System](Docs/Subsystems/Combat_System.md)      | Turn-based engine with initiative queue, ability resolution, modifiers.     |
+| [Progression System](Docs/Subsystems/Progression_System.md) | XP, leveling, talents, glyph upgrades, equipment tiers.                     |
+| [Content System](Docs/Subsystems/Content_System.md)     | Encounters, dialogue scripts, loot tables, region data.                     |
+| [Dungeon Generator](Docs/Subsystems/Dungeon_Generator.md)  | Procedural generator for roguelite dungeon layouts, rules, biomes.          |
+| [Event Editor v2](Docs/Subsystems/Event_Editor_v2.md)    | Internal tool for branching encounters and story beats.                     |
+| [Build Pipeline](Docs/Subsystems/Build_Pipeline.md)     | Automation for nightly/weekly builds, version tagging, changelog generation.|
 
 Each subsystem is implemented as a set of **Unity components + ScriptableObjects + JSON data**, with minimal hard coupling between modules. Systems communicate through explicit interfaces and data contracts, not direct scene references where avoidable.
+
+Full subsystem briefs live in `Docs/Subsystems/` and are linked from `Docs/System_Architecture.md`.
 
 ---
 
