@@ -3,14 +3,14 @@
 ## Overview
 Runes & Swords follows a modular Unity architecture that isolates gameplay systems behind explicit interfaces and shared data contracts. Each system ships as a package-friendly folder inside `Scripts`, with ScriptableObject configuration assets in `Assets` and runtime JSON consumed through loaders in `Scripts/ContentRuntime`.
 
-## Subsystems
-- **Exploration System** — Hex-grid traversal, fog-of-war updates, region discovery, and encounter triggering.
-- **Combat System** — Turn-based loop with initiative queue, ability resolution pipeline, and status effect management.
-- **Progression System** — XP curves, talent trees, glyph upgrades, equipment tiers, and unlock conditions.
-- **Content System** — Encounter graphs, dialogue scripting, loot tables, region metadata, and boss setups.
-- **Dungeon Generator** — Procedural ruleset for roguelite dungeons, biome selectors, room templates, and boss/key placements.
-- **Event Editor v2** — In-editor tool for building branching encounters that export JSON payloads consumed at runtime.
-- **Build Pipeline** — Nightly and milestone build automation with version tagging and changelog generation.
+## Subsystems (Detailed Docs)
+- **Exploration System** — Hex-grid traversal, fog-of-war updates, region discovery, and encounter triggering. See `Docs/Subsystems/Exploration_System.md`.
+- **Combat System** — Turn-based loop with initiative queue, ability resolution pipeline, and status effect management. See `Docs/Subsystems/Combat_System.md`.
+- **Progression System** — XP curves, talent trees, glyph upgrades, equipment tiers, and unlock conditions. See `Docs/Subsystems/Progression_System.md`.
+- **Content System** — Encounter graphs, dialogue scripting, loot tables, region metadata, and boss setups. See `Docs/Subsystems/Content_System.md`.
+- **Dungeon Generator** — Procedural ruleset for roguelite dungeons, biome selectors, room templates, and boss/key placements. See `Docs/Subsystems/Dungeon_Generator.md`.
+- **Event Editor v2** — In-editor tool for building branching encounters that export JSON payloads consumed at runtime. See `Docs/Subsystems/Event_Editor_v2.md`.
+- **Build Pipeline** — Nightly and milestone build automation with version tagging and changelog generation. See `Docs/Subsystems/Build_Pipeline.md`.
 
 ## Data Flow
 1. **Authored data** lives in `Assets/` (ScriptableObjects) and `Assets/Encounters` (JSON).
