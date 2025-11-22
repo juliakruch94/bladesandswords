@@ -30,6 +30,14 @@ Tools/
 
 Docs/
   System_Architecture.md
+  Subsystems/
+    Exploration_System.md
+    Combat_System.md
+    Progression_System.md
+    Content_System.md
+    Dungeon_Generator.md
+    Event_Editor_v2.md
+    Build_Pipeline.md
   Data_Formats_and_File_Structure.md
   Performance_and_Targets.md
   Dependencies_and_Risks.md
@@ -61,6 +69,8 @@ The game uses a **modular architecture** built around clearly separated subsyste
 | Build Pipeline     | Automation for nightly/weekly builds, version tagging, changelog generation.|
 
 Each subsystem is implemented as a set of **Unity components + ScriptableObjects + JSON data**, with minimal hard coupling between modules. Systems communicate through explicit interfaces and data contracts, not direct scene references where avoidable.
+
+Full subsystem briefs live in `Docs/Subsystems/` and are linked from `Docs/System_Architecture.md`.
 
 ---
 
