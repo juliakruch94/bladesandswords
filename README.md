@@ -1,97 +1,153 @@
-# Runes & Swords – Game Documentation Repository
+# Runes & Swords — Game Project
 
-This repository contains production-ready documentation, technical specifications, and development standards for the project **Runes & Swords**, a turn-based narrative RPG inspired by tabletop mechanics.
+This repository contains the full Unity project for **Runes & Swords**, a tactical narrative RPG with hex-based exploration, turn-based combat, progression systems, and post-release support (DLC, events, patches).
 
-The repo serves as the *single source of truth* for all project-related documents used by Design, Programming, Art, QA, and Production teams.
+The repo is intended for programmers, technical designers, and tools engineers. High-level production docs (GDD, QA, publishing, business) live in Confluence and Miro. Here we keep **only the technical and implementation-facing documentation** needed to build and maintain the game.
 
 ---
 
-
-
-## 📁 Repository Structure
+## 📂 Repository Structure (High-Level)
 
 ```plaintext
-docs/
- └── gdd/
-      └── Game_Design_Document.md
+Assets/
+  HexRegions/          # Hex grid maps, region definitions, props
+  Combat/             # Abilities, FX, animations, status effects
+  Encounters/         # JSON encounter files, branching logic, rewards
+  Dungeons/           # Procedural generation rules, room templates, biomes
+  UI/                 # UI prefabs, layouts, icons
+  Characters/         # Hero and enemy models, rigs, textures
 
-tech_specs/
- ├── Core_Systems_Spec.md
- └── Architecture_Overview.md
+Scripts/
+  Core/               # Core engine glue, bootstrap, services
+  Systems/            # Gameplay systems (exploration, combat, progression)
+  ContentRuntime/     # Runtime loaders for encounters, regions, dungeons
+  ToolsRuntime/       # In-editor tooling glue, custom inspectors
 
-features/
- └── Feature_Template.md
+Tools/
+  EventEditor/        # Source code & UI for Event Editor v2
+  DungeonGenerator/   # Dungeon generation toolkit
+  BuildPipeline/      # Build scripts, CI helpers, version tagging
 
-qa/
- └── QA_Release_Checklist.md
+Docs/
+  System_Architecture.md
+  Data_Formats_and_File_Structure.md
+  Performance_and_Targets.md
+  Dependencies_and_Risks.md
 
-publishing/
- └── Publishing_Requirements.md
+BuildPipeline/
+  ci_config/          # CI/CD configs, templates
+  scripts/            # Build & packaging scripts
+
+ProjectSettings/      # Unity project settings
+Packages/             # Unity package manifest
+README.md
+.gitignore
 ```
 
 ---
 
-## 📌 Purpose
+## 🧱 System Architecture Overview
 
-This repository ensures that:
+The game uses a **modular architecture** built around clearly separated subsystems:
 
-- All teams follow consistent documentation standards  
-- Feature specs and rulebooks are easily accessible  
-- Technical decisions are centralized and trackable  
-- Release and QA criteria remain transparent  
-- Publishing/legal requirements stay versioned  
+| Subsystem          | Description                                                                 |
+|--------------------|-----------------------------------------------------------------------------|
+| Exploration System | Handles hex-grid traversal, node discovery, encounter triggers.             |
+| Combat System      | Turn-based engine with initiative queue, ability resolution, modifiers.     |
+| Progression System | XP, leveling, talents, glyph upgrades, equipment tiers.                     |
+| Content System     | Encounters, dialogue scripts, loot tables, region data.                     |
+| Dungeon Generator  | Procedural generator for roguelite dungeon layouts, rules, biomes.          |
+| Event Editor v2    | Internal tool for branching encounters and story beats.                     |
+| Build Pipeline     | Automation for nightly/weekly builds, version tagging, changelog generation.|
 
----
-
-## 🗂 Linked External Docs
-
-These documents are maintained in **Confluence**, with smart links placed in Miro:
-
-- **GDD**  
-- **Technical Specifications**  
-- **QA & Release Checklist**  
-- **Feature Specification**  
-- **Publishing Requirements**  
-
-> If you update any Confluence title, remember to re-paste the link in Miro to refresh its smart-link metadata.
+Each subsystem is implemented as a set of **Unity components + ScriptableObjects + JSON data**, with minimal hard coupling between modules. Systems communicate through explicit interfaces and data contracts, not direct scene references where avoidable.
 
 ---
 
-## 🔧 Branching Model
+## 🗃 Data Formats & File Structure
 
-This project uses a lightweight branching strategy:
+### 3.1 Core File Types
 
-- **main** — production-ready documentation only  
-- **dev-docs** — active work on new documentation  
-- **feature/*** — optional per-feature docs updates  
-- **release/*** — locked branches for milestone polishing  
-- **archive/** — frozen folders for deprecated or legacy docs  
+- **JSON** — encounters, events, dungeon layouts, loot tables  
+- **ScriptableObjects** — ability definitions, hero data, enemy stats, configuration sets  
+- **CSV** — localization tables and text content  
+- **PNG/FBX** — UI, 2D art, 3D assets, rigs, animations  
 
-All merges into `main` must pass Producer/Technical Lead review.
+### 3.2 Project Directory Mapping
 
----
-
-## 🧭 Maintainers
-
-- **Producer:** Yuliia Kriuchkova  
-- **Technical Lead:** *<name>*  
-- **Game Director:** *<name>*  
-- **Art Director:** *<name>*  
-- **QA Lead:** *<name>*  
+| Directory             | Purpose                                                                 |
+|-----------------------|-------------------------------------------------------------------------|
+| `Assets/HexRegions`  | Hex-grid region data, tiles, biomes, environmental props.              |
+| `Assets/Combat`      | Combat abilities, VFX, animation clips, status effect assets.          |
+| `Assets/Encounters`  | JSON encounter files, branching graphs, rewards, conditions.           |
+| `Assets/Dungeons`    | Procedural rules, room templates, biome modifiers, boss room setups.   |
+| `Tools/EventEditor`  | Editor window, graph UI, serializers for Event Editor v2.              |
+| `BuildPipeline`      | Build scripts, CI configuration, version metadata and tagging helpers. |
 
 ---
 
-## ✔ Contribution Rules
+## 🎯 Technical Requirements & Targets
 
-- Commit meaningful, descriptive messages  
-- Keep documentation modular (one file = one topic)  
-- Avoid large unstructured text blocks  
-- Update diagrams separately in Miro when needed  
-- All major design changes must also be reflected in the GDD  
+The project targets **Unity LTS** on PC (Steam) as the primary platform.
+
+### Performance Targets
+
+- **Frame rate:** 60 FPS target on mid-spec PC in combat and exploration  
+- **Load times:** `< 5s` for small regions, `< 12s` for large dungeon maps  
+- **Memory usage:** ≤ 2.5 GB peak in complex combat scenarios  
+- **Ability resolution:** combat ability resolution time `< 0.5s` per action  
+
+### Platform Considerations
+
+- **Primary:** Windows PC (Steam)  
+- **Secondary (post-release):** macOS, Steam Deck optimization  
+
+All heavy systems (procedural generation, encounter loading, large combat states) must respect these constraints.
 
 ---
 
-## 📜 License
+## 🔗 System Dependencies
 
-Internal studio documentation. Not intended for public distribution.
+| System            | Depends On         | Notes                                                           |
+|-------------------|--------------------|-----------------------------------------------------------------|
+| Combat            | Progression, Content System | Abilities & stats come from progression trees and enemy data. |
+| Exploration       | HexRegions, Encounters     | Movement on map triggers encounter definitions and events.    |
+| Dungeon Generator | Content System     | Uses biome templates, enemy pools, boss definitions.           |
+| Event Editor v2   | Content System     | Outputs JSON for encounters and story beats consumed at runtime.|
+
+Dependencies should be **one-directional** where possible to avoid circular references and spaghetti initialization order.
+
+---
+
+## ⚠ Technical Risks & Mitigations
+
+- **Dungeon generation complexity** may cause memory spikes  
+  → Use pooling, LOD, and cap maximum active rooms/nodes.  
+
+- **Event Editor v2 delays** can bottleneck content production  
+  → Ship minimal viable version early, then iterate; keep JSON schema stable.  
+
+- **Build pipeline failures** can silently slow down QA and milestones  
+  → Nightly CI runs with notifications; keep build scripts versioned and documented.  
+
+- **Overuse of ScriptableObjects without clear ownership** can lead to hidden coupling  
+  → Establish conventions for who owns which asset groups, and how they are referenced.  
+
+---
+
+## 🧪 Testing & CI
+
+- Core systems should have **play-mode tests** for combat, progression, and generation rules.  
+- **Nightly builds** are run from `BuildPipeline/scripts` and pushed to internal branches.  
+- Pre-release milestones (Demo, Beta, EA, Release) require green CI status and manual smoke tests.
+
+---
+
+## 👥 Ownership
+
+- **Tech Lead / Architect** — maintains System Architecture & Dependencies docs in `/Docs`.  
+- **Gameplay Programmers** — own systems under `Scripts/Systems` and their tests.  
+- **Tools Engineer** — owns `Tools/EventEditor`, `DungeonGenerator`, and build tools.  
+
+All changes to core systems should be reflected in the docs inside `/Docs` in the same PR.
 
