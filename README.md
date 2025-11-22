@@ -74,6 +74,25 @@ Full subsystem briefs live in `Docs/Subsystems/` and are linked from `Docs/Syste
 
 ---
 
+## 🌿 Branching & Workflow
+
+| Branch | Purpose | Rules |
+|--------|---------|-------|
+| `main` | Release-ready code and shipped patches. | Protected; only merge from `release/*` or `hotfix/*` after CI green and sign-off from lead. |
+| `develop` | Integration branch for the upcoming milestone. | PRs from `feature/*` and `content/*` only; keep docs in `/Docs` updated in the same PR. |
+| `feature/<system>` | Short-lived feature work per system (e.g., `feature/combat-initiative`). | Rebase on `develop`, add subsystem docs/test notes, open PR to `develop`. |
+| `content/<track>` | Narrative/content drops (e.g., `content/act2-events`). | Coordinate schemas with tools; PR to `develop` with JSON samples validated. |
+| `release/<version>` | Stabilization for milestone builds (e.g., `release/0.5.0-beta`). | Bugfix-only; daily cherry-picks from `develop`; merge back to both `main` and `develop` after release. |
+| `hotfix/<ticket>` | Urgent fixes on shipped builds. | Branch from `main`, add regression test notes, back-merge into `develop`. |
+
+**General rules**
+
+- Every PR must include updated docs when touching systems, schemas, or pipelines.
+- Keep branches scoped: one feature/bug per branch with clear naming.
+- Run relevant play-mode/editor tests before merging; attach logs if flaky.
+- Prefer rebase over merge for `feature/*` and `content/*` to keep history linear.
+- CI must be green before merging into `develop`, `release/*`, or `main`.
+
 ## 🗃 Data Formats & File Structure
 
 ### 3.1 Core File Types
